@@ -1,6 +1,6 @@
 function PopupWithiForm(props) {
   return (
-    <div className={`popup popup_${props.name}`} >
+    <div className={`popup popup_${props.name} ${props.isOpen ? 'popup_opened' : ''}`} >
       <div className="popup__container">
         <h2 className="popup__text">{props.title}</h2>
         <form name={props.name} className={`popup__form popup__form_${props.name}`} noValidate>

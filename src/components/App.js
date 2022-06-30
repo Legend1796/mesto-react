@@ -1,3 +1,4 @@
+import React from 'react';
 import '../index.css';
 import Header from './Header';
 import Footer from './Footer';
@@ -6,10 +7,27 @@ import PopupWithiForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 
 function App() {
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+
+  function handleEditProfileClick() {
+    setEditProfilePopupOpen(true);
+  }
+
+  function handleAddPlaceClick() {
+    setAddPlacePopupOpen(true);
+  }
+
+  function handleEditAvatarClick() {
+    setEditAvatarPopupOpen(true);
+  }
+
+
   return (
     <div className="page">
       <Header />
-      <Main />
+      <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
 
       <template className="elem">
         <li className="element">
@@ -28,7 +46,7 @@ function App() {
       </template>
 
       <Footer />
-      <PopupWithiForm name="profile" title="Редактировать профиль" children={
+      <PopupWithiForm name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} children={
         <>
           <input className=" popup__input popup__input_type_name" id="name-input" type="text" name="name" placeholder="Имя"
             minLength="2" maxLength="40" required />
@@ -37,7 +55,7 @@ function App() {
             placeholder="О себе" minLength="2" maxLength="200" required />
           <span className="popup__input-error about-input-error"></span>
         </>} />
-      <PopupWithiForm name="new-space" title="Новое место" children={
+      <PopupWithiForm name="new-space" title="Новое место" isOpen={isAddPlacePopupOpen} children={
         <>
           <input className="popup__input popup__input_type_name-space" id="cardName-input" type="text" name="name"
             placeholder="Название места" minLength="2" maxLength="30" required />
@@ -47,7 +65,7 @@ function App() {
           <span className="popup__input-error url-input-error"></span>
         </>
       } />
-      <PopupWithiForm name="edit-avatar" title="Обновить аватар" children={
+      <PopupWithiForm name="edit-avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} children={
         <>
           <input className="popup__input popup__input_type_link-avatar" id="avatar-input" type="url" name="link"
             placeholder="Ссылка на аватар" required />
