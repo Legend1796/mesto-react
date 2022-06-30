@@ -10,6 +10,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(false);
 
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -27,29 +28,17 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setSelectedCard(false);
   }
+  function handleCardClick() {
+    setSelectedCard(true);
+  }
+
 
   return (
     <div className="page">
       <Header />
       <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
-
-      <template className="elem">
-        <li className="element">
-          <img className="element__image" src="#" alt="Фото места" />
-          <button className="element__image-btn" type="button" aria-label="На весь экран фото места"></button>
-          <button className="element__delete-urn" type="button" aria-label="Удалить карточку места"></button>
-          <div className="element__rectangle">
-            <h2 className="element__title"></h2>
-            <div className="element__like-container">
-              <button className="element__like" type="button" aria-label="В избранное"></button>
-              <p className="element__count-likes"></p>
-            </div>
-
-          </div>
-        </li>
-      </template>
-
       <Footer />
       <PopupWithiForm name="profile" title="Редактировать профиль" onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} children={
         <>
