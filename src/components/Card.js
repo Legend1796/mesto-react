@@ -1,12 +1,10 @@
 import React from 'react';
 
-function handleClick(props) {
-  console.log(props.cardInfo);
-  // props.onCardClick;
-
-}
-
 function Card(props) {
+  function handleClick() {
+    props.fullSize(props.cardInfo);
+  }
+
   return (
     <li className="element">
       <img className="element__image" src={props.cardInfo.link} alt="Фото места" />

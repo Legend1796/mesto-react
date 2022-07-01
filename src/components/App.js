@@ -11,7 +11,8 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(false);
+  const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
 
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -26,11 +27,11 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
-    setSelectedCard(false);
+    setCardPopupOpen(false);
   }
-  function handleCardClick() {
-    setSelectedCard(true);
-    alert(selectedCard);
+  function handleCardClick(card) {
+    setSelectedCard({ name: card.name, link: card.link });
+    setCardPopupOpen(true);
   }
 
   return (
@@ -71,7 +72,7 @@ function App() {
       <PopupWithiForm name="delete-card" title="Вы уверены?" onClose={handleCloseAllPopups} children={
         <button className="popup__save-btn" type="submit">Да</button>
       } />
-      <ImagePopup isOpen={selectedCard} onClose={handleCloseAllPopups} name={selectedCard.name} link={selectedCard.link} />
+      <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
     </div>
   );
 }

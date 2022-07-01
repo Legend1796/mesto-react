@@ -4,8 +4,8 @@ function ImagePopup(props) {
 
       <div className="popup__container popup__container_full-size">
         <button onClick={props.onClose} className="popup__close" type="button" aria-label="Закрыть"></button>
-        <img className="popup__image" src={props.link} alt="Фото места" />
-        <h2 className="popup__title">{props.name}</h2>
+        <img className="popup__image" src={props.cardInfo.link} alt="Фото места" />
+        <h2 className="popup__title">{props.cardInfo.name}</h2>
       </div>
     </div >
   )
