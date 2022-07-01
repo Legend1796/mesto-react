@@ -19,7 +19,6 @@ function Main(props) {
         setUserDescription(info.about);
         setUserAvatar(info.avatar);
         setCards(initialCards);
-        console.log('api');
       })
       .catch((err) => {
         console.log(err);
@@ -46,7 +45,7 @@ function Main(props) {
       <section>
         <ul className="elements">
           {cards.map((card) => (
-            <Card cardInfo={card} onClick={props.onCardClick} />
+            <Card cardInfo={card} onClick={props.onCardClick} key={card._id} />
           ))}
         </ul>
       </section>
