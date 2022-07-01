@@ -10,29 +10,24 @@ function Main(props) {
   const [userAvatar, setUserAvatar] = React.useState();
   const [cards, setCards] = React.useState([]);
 
-  api.getUserInfo()
-    .then(info => {
-      console.log('api');
-      setUserName(info.name);
-      setUserDescription(info.about);
-      setUserAvatar(info.avatar);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-
-  api.getInitialCards()
-    .then(initialCards => {
-      console.log('api');
-
-      setCards(initialCards);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+  React.useEffect(() => {
+    Promise.all([
+      api.getUserInfo(),
+      api.getInitialCards()])
+      .then(([info, initialCards]) => {
+        setUserName(info.name);
+        setUserDescription(info.about);
+        setUserAvatar(info.avatar);
+        setCards(initialCards);
+        console.log('api');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }, []);
 
   return (
-    <main >
+    <main>
       <section className="profile">
         <div className="profile__info">
           <button onClick={props.isEditAvatarPopupOpen} className="profile__edit-avatar" type="button" aria-label="Редактировать Аватар"></button>
