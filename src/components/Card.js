@@ -1,10 +1,14 @@
 import React from 'react';
 
+function handleClick(props) {
+  props.onCardClick(props.cardInfo);
+}
+
 function Card(props) {
   return (
     <li className="element">
       <img className="element__image" src={props.cardInfo.link} alt="Фото места" />
-      <button className="element__image-btn" type="button" aria-label="На весь экран фото места"></button>
+      <button onClick={handleClick} className="element__image-btn" type="button" aria-label="На весь экран фото места"></button>
       <button className="element__delete-urn" type="button" aria-label="Удалить карточку места"></button>
       <div className="element__rectangle">
         <h2 className="element__title">{props.cardInfo.name}</h2>

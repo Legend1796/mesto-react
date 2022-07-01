@@ -10,8 +10,6 @@ function Main(props) {
   const [userAvatar, setUserAvatar] = React.useState();
   const [cards, setCards] = React.useState([]);
 
-
-
   api.getUserInfo()
     .then(info => {
       console.log('api');
@@ -34,7 +32,7 @@ function Main(props) {
     })
 
   return (
-    <main>
+    <main >
       <section className="profile">
         <div className="profile__info">
           <button onClick={props.isEditAvatarPopupOpen} className="profile__edit-avatar" type="button" aria-label="Редактировать Аватар"></button>
@@ -53,7 +51,7 @@ function Main(props) {
       <section>
         <ul className="elements">
           {cards.map((card) => (
-            <Card cardInfo={card} />
+            <Card cardInfo={card} onClick={props.onCardClick} />
           ))}
         </ul>
       </section>

@@ -15,15 +15,12 @@ function App() {
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
   }
-
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
   }
-
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
   }
-
   function handleCloseAllPopups() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
@@ -32,13 +29,17 @@ function App() {
   }
   function handleCardClick() {
     setSelectedCard(true);
+    alert(selectedCard);
   }
 
-
   return (
-    <div className="page">
+    <div className="page" onKeyDown={(e) => {
+      if (e.key === 'Escape') {
+        handleCloseAllPopups();
+      }
+    }}>
       <Header />
-      <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
+      <Main onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
       <Footer />
       <PopupWithiForm name="profile" title="Редактировать профиль" onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} children={
         <>
@@ -66,10 +67,10 @@ function App() {
           <span className="popup__input-error avatar-input-error"></span>
         </>
       } />
-      <PopupWithiForm name="delete-card" title="Вы уверены?" children={
+      <PopupWithiForm name="delete-card" title="Вы уверены?" onClose={handleCloseAllPopups} children={
         <button className="popup__save-btn" type="submit">Да</button>
       } />
-      <ImagePopup />
+      <ImagePopup isOpen={selectedCard} onClose={handleCloseAllPopups} name={selectedCard.name} link={selectedCard.link} />
     </div>
   );
 }
