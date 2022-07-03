@@ -2,7 +2,7 @@ import React from 'react';
 
 function Card(props) {
   function handleClick() {
-    props.fullSize(props.cardInfo);
+    props.onCardClick(props.cardInfo);
   }
 
   return (

@@ -43,7 +43,7 @@ function App() {
       <Header />
       <Main onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
       <Footer />
-      <PopupWithiForm name="profile" title="Редактировать профиль" onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} children={
+      <PopupWithiForm name="profile" title="Редактировать профиль" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} children={
         <>
           <input className=" popup__input popup__input_type_name" id="name-input" type="text" name="name" placeholder="Имя"
             minLength="2" maxLength="40" required />
@@ -52,7 +52,7 @@ function App() {
             placeholder="О себе" minLength="2" maxLength="200" required />
           <span className="popup__input-error about-input-error"></span>
         </>} />
-      <PopupWithiForm name="new-space" title="Новое место" onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} children={
+      <PopupWithiForm name="new-space" title="Новое место" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} children={
         <>
           <input className="popup__input popup__input_type_name-space" id="cardName-input" type="text" name="name"
             placeholder="Название места" minLength="2" maxLength="30" required />
@@ -62,16 +62,14 @@ function App() {
           <span className="popup__input-error url-input-error"></span>
         </>
       } />
-      <PopupWithiForm name="edit-avatar" title="Обновить аватар" onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} children={
+      <PopupWithiForm name="edit-avatar" title="Обновить аватар" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} children={
         <>
           <input className="popup__input popup__input_type_link-avatar" id="avatar-input" type="url" name="link"
             placeholder="Ссылка на аватар" required />
           <span className="popup__input-error avatar-input-error"></span>
         </>
       } />
-      <PopupWithiForm name="delete-card" title="Вы уверены?" onClose={handleCloseAllPopups} children={
-        <button className="popup__save-btn" type="submit">Да</button>
-      } />
+      <PopupWithiForm name="delete-card" title="Вы уверены?" buttonText="Да" onClose={handleCloseAllPopups} />
       <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
     </div>
   );

@@ -5,9 +5,9 @@ import Card from './Card';
 
 function Main(props) {
 
-  const [userName, setUserName] = React.useState(avatar);
-  const [userDescription, setUserDescription] = React.useState();
-  const [userAvatar, setUserAvatar] = React.useState();
+  const [userName, setUserName] = React.useState(null);
+  const [userDescription, setUserDescription] = React.useState(null);
+  const [userAvatar, setUserAvatar] = React.useState(avatar);
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
@@ -29,23 +29,23 @@ function Main(props) {
     <main>
       <section className="profile">
         <div className="profile__info">
-          <button onClick={props.isEditAvatarPopupOpen} className="profile__edit-avatar" type="button" aria-label="Редактировать Аватар"></button>
+          <button onClick={props.isEditAvatarPopupOpen} className="profile__edit-avatar" type="button" aria-label="Редактировать Аватар" />
           <img className="profile__avatar" src={userAvatar} alt="Аватар" />
           <div className="profile__block">
             <div className="profile__name-edit">
               <h1 className="profile__name">{userName}</h1>
-              <button onClick={props.onEditProfile} className="profile__edit-btn" type="button" aria-label="Редактировать профиль"></button>
+              <button onClick={props.onEditProfile} className="profile__edit-btn" type="button" aria-label="Редактировать профиль" />
             </div>
             <p className="profile__job">{userDescription}</p>
           </div>
 
         </div>
-        <button onClick={props.isAddPlacePopupOpen} className="profile__add-btn" type="button" aria-label="Добавить новое место"></button>
+        <button onClick={props.isAddPlacePopupOpen} className="profile__add-btn" type="button" aria-label="Добавить новое место" />
       </section>
       <section>
         <ul className="elements">
           {cards.map((card) => (
-            <Card cardInfo={card} fullSize={props.onCardClick} key={card._id} />
+            <Card cardInfo={card} onCardClick={props.onCardClick} key={card._id} />
           ))}
         </ul>
       </section>
