@@ -38,10 +38,15 @@ function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCar
     }
   }
 
-
-
-
-
+  function handleCardDelete(cardInfo) {
+    api.deleteCard(cardInfo._id)
+      .then(() => {
+        setCards(cards.filter(card => card._id !== cardInfo._id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <main>
@@ -64,7 +69,7 @@ function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCar
         <ul className="elements">
           {cards.map((card) => (
 
-            <Card cardInfo={card} onCardLikeClick={handleCardLike} onCardClick={onCardClick} key={card._id} />
+            <Card cardInfo={card} onCardDelete={handleCardDelete} onCardLikeClick={handleCardLike} onCardClick={onCardClick} key={card._id} />
           ))}
         </ul>
       </section>
