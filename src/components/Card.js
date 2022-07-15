@@ -1,20 +1,29 @@
 import React from 'react';
 
-function Card(props) {
+function Card({ cardInfo, onCardClick, currentUser }) {
+  const isOwn = cardInfo.owner._id === currentUser._id;
+  const cardDeleteButtonClassName = (
+    `element__delete-urn ${isOwn ? 'element__delete-urn_active' : ''}`
+  );
+
+  const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
+  console.log('isLiked: ' + isLiked);
+  const cardLikeButtonClassName = `element__like ${isLiked ? 'element__like_active' : ''}`;
+
   function handleClick() {
-    props.onCardClick(props.cardInfo);
+    onCardClick(cardInfo);
   }
 
   return (
     <li className="element">
-      <img className="element__image" src={props.cardInfo.link} alt="Фото места" />
+      <img className="element__image" src={cardInfo.link} alt="Фото места" />
       <button onClick={handleClick} className="element__image-btn" type="button" aria-label="На весь экран фото места"></button>
-      <button className="element__delete-urn" type="button" aria-label="Удалить карточку места"></button>
+      <button className={cardDeleteButtonClassName} type="button" aria-label="Удалить карточку места"></button>
       <div className="element__rectangle">
-        <h2 className="element__title">{props.cardInfo.name}</h2>
+        <h2 className="element__title">{cardInfo.name}</h2>
         <div className="element__like-container">
-          <button className="element__like" type="button" aria-label="В избранное"></button>
-          <p className="element__count-likes">{props.cardInfo.likes.length}</p>
+          <button className={cardLikeButtonClassName} type="button" aria-label="В избранное"></button>
+          <p className="element__count-likes">{cardInfo.likes.length}</p>
         </div>
 
       </div>
