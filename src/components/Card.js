@@ -14,10 +14,11 @@ function Card({ cardInfo, onCardClick, onCardLikeClick }) {
   function handleClick() {
     onCardClick(cardInfo);
   }
-
-  function handleCardLike() {
+  function handleCardLikeClick() {
     onCardLikeClick(cardInfo);
   }
+
+
 
   return (
     <li className="element">
@@ -27,7 +28,7 @@ function Card({ cardInfo, onCardClick, onCardLikeClick }) {
       <div className="element__rectangle">
         <h2 className="element__title">{cardInfo.name}</h2>
         <div className="element__like-container">
-          <button className={cardLikeButtonClassName} onClick={handleCardLike} type="button" aria-label="В избранное"></button>
+          <button className={cardLikeButtonClassName} onClick={handleCardLikeClick} type="button" aria-label="В избранное"></button>
           <p className="element__count-likes">{cardInfo.likes.length}</p>
         </div>
 
