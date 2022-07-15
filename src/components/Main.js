@@ -1,25 +1,40 @@
 import React from 'react';
-// import avatar from '../images/avatar.jpg';
+import api from '../utils/api';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCardClick, cards }) {
   const currentUser = React.useContext(CurrentUserContext);
+  console.log(currentUser);
+  function handleCardLike(cardInfo) {
+    const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    if (!isLiked) {
+      api.changeLikeCardStatus(cardInfo._id, 'PUT').then((newCard) => {
+        console.log(newCard);
+        // setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
+      });
+    } else {
+      api.changeLikeCardStatus(cardInfo._id, 'DELETE').then((newCard) => {
+        console.log(newCard);
+        // setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
+      });
+    }
 
-  // const [userAvatar, setUserAvatar] = React.useState(avatar);
 
+  }
   return (
     <main>
       <section className="profile">
         <div className="profile__info">
           <button onClick={isEditAvatarPopupOpen} className="profile__edit-avatar" type="button" aria-label="Редактировать Аватар" />
-          {/* <img className="profile__avatar" src={currentUser.avatar} alt="Аватар" /> */}
+          <img className="profile__avatar" src={currentUser.avatar} alt="Аватар" />
           <div className="profile__block">
             <div className="profile__name-edit">
-              {/* <h1 className="profile__name">{currentUser.name}</h1> */}
+              <h1 className="profile__name">{currentUser.name}</h1>
               <button onClick={onEditProfile} className="profile__edit-btn" type="button" aria-label="Редактировать профиль" />
             </div>
-            {/* <p className="profile__job">{currentUser.about}</p> */}
+            <p className="profile__job">{currentUser.about}</p>
           </div>
 
         </div>
@@ -28,7 +43,8 @@ function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCar
       <section>
         <ul className="elements">
           {cards.map((card) => (
-            <Card cardInfo={card} onCardClick={onCardClick} key={card._id} currentUser={currentUser} />
+
+            <Card cardInfo={card} onLikeCardClick={handleCardLike} onCardClick={onCardClick} key={card._id} currentUser={currentUser} />
           ))}
         </ul>
       </section>

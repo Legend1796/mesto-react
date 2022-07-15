@@ -73,9 +73,10 @@ export class Api {
       });
   }
 
-  addLike(cardId) {
+  changeLikeCardStatus(cardId, method) {
+
     return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'PUT',
+      method: method,
       headers: this._headers
     })
       .then(res => {
@@ -83,15 +84,15 @@ export class Api {
       });
   }
 
-  removeLike(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'DELETE',
-      headers: this._headers
-    })
-      .then(res => {
-        return this._getResponseData(res);
-      });
-  }
+  // removeLike(cardId) {
+  //   return fetch(`${this._url}/cards/${cardId}/likes`, {
+  //     method: 'DELETE',
+  //     headers: this._headers
+  //   })
+  //     .then(res => {
+  //       return this._getResponseData(res);
+  //     });
+  // }
 
   _getResponseData(res) {
     if (res.ok) {
