@@ -74,7 +74,6 @@ export class Api {
   }
 
   changeLikeCardStatus(cardId, method) {
-
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: method,
       headers: this._headers
@@ -83,16 +82,6 @@ export class Api {
         return this._getResponseData(res);
       });
   }
-
-  // removeLike(cardId) {
-  //   return fetch(`${this._url}/cards/${cardId}/likes`, {
-  //     method: 'DELETE',
-  //     headers: this._headers
-  //   })
-  //     .then(res => {
-  //       return this._getResponseData(res);
-  //     });
-  // }
 
   _getResponseData(res) {
     if (res.ok) {

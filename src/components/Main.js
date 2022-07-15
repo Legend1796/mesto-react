@@ -3,26 +3,9 @@ import api from '../utils/api';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCardClick, cards }) {
+function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCardClick, cards, onCardLikeClick }) {
   const currentUser = React.useContext(CurrentUserContext);
-  console.log(currentUser);
-  function handleCardLike(cardInfo) {
-    const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    if (!isLiked) {
-      api.changeLikeCardStatus(cardInfo._id, 'PUT').then((newCard) => {
-        console.log(newCard);
-        // setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
-      });
-    } else {
-      api.changeLikeCardStatus(cardInfo._id, 'DELETE').then((newCard) => {
-        console.log(newCard);
-        // setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
-      });
-    }
 
-
-  }
   return (
     <main>
       <section className="profile">
@@ -44,7 +27,7 @@ function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCar
         <ul className="elements">
           {cards.map((card) => (
 
-            <Card cardInfo={card} onLikeCardClick={handleCardLike} onCardClick={onCardClick} key={card._id} currentUser={currentUser} />
+            <Card cardInfo={card} onCardLikeClick={onCardLikeClick} onCardClick={onCardClick} key={card._id} />
           ))}
         </ul>
       </section>

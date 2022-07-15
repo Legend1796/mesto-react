@@ -50,6 +50,26 @@ function App() {
     setSelectedCard({ name: card.name, link: card.link });
     setCardPopupOpen(true);
   }
+  function handleCardLikeClick(cardInfo) {
+    const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
+    if (!isLiked) {
+      api.changeLikeCardStatus(cardInfo._id, 'PUT')
+        .then((newCard) => {
+          setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      api.changeLikeCardStatus(cardInfo._id, 'DELETE')
+        .then((newCard) => {
+          setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -59,7 +79,7 @@ function App() {
         }
       }}>
         <Header />
-        <Main cards={cards} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
+        <Main cards={cards} onCardLikeClick={handleCardLikeClick} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
         <Footer />
         <PopupWithiForm name="profile" title="Редактировать профиль" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} children={
           <>
