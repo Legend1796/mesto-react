@@ -7,6 +7,7 @@ import PopupWithiForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import EditProfilePopup from './EditProfilePopup';
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
   const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setUserInfo] = React.useState({ name: '', about: '', avatar: '' });
+
+  // const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -57,15 +60,7 @@ function App() {
         <Header />
         <Main onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
         <Footer />
-        <PopupWithiForm name="profile" title="Редактировать профиль" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} children={
-          <>
-            <input className=" popup__input popup__input_type_name" id="name-input" type="text" name="name" placeholder="Имя"
-              minLength="2" maxLength="40" required />
-            <span className="popup__input-error name-input-error"></span>
-            <input className="popup__input popup__input_type_job" id="about-input" type="text" name="about"
-              placeholder="О себе" minLength="2" maxLength="200" required />
-            <span className="popup__input-error about-input-error"></span>
-          </>} />
+        <EditProfilePopup onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} />
         <PopupWithiForm name="new-space" title="Новое место" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} children={
           <>
             <input className="popup__input popup__input_type_name-space" id="cardName-input" type="text" name="name"
