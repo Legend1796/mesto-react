@@ -9,6 +9,7 @@ import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 function App() {
 
@@ -81,7 +82,6 @@ function App() {
         setTimeout(setButtonText('Сохранить'), 2000);
       })
   }
-
   function handleCardLike(cardInfo) {
     const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
     if (!isLiked) {
@@ -102,7 +102,6 @@ function App() {
         });
     }
   }
-
   function handleCardDelete(cardInfo) {
     api.deleteCard(cardInfo._id)
       .then(() => {
@@ -111,6 +110,21 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+  }
+  function handleAddPlaceSubmit(cardInfo) {
+    console.log(cardInfo);
+    setButtonText('Сохранение...');
+    api.setInitialCards(cardInfo)
+      .then((res) => {
+        // setUserInfo(res);
+        handleCloseAllPopups();
+      })
+      .catch((err) => {
+        console.log('EditProfilePopup:', err);
+      })
+      .finally(() => {
+        setTimeout(setButtonText('Сохранить'), 2000);
+      })
   }
 
 
@@ -126,16 +140,7 @@ function App() {
         <Footer />
         <EditProfilePopup buttonText={buttonText} onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} />
         <EditAvatarPopup buttonText={buttonText} onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} />
-        <PopupWithiForm name="new-space" title="Новое место" buttonText="Сохранить" onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} children={
-          <>
-            <input className="popup__input popup__input_type_name-space" id="cardName-input" type="text" name="name"
-              placeholder="Название места" minLength="2" maxLength="30" required />
-            <span className="popup__input-error cardName-input-error"></span>
-            <input className="popup__input popup__input_type_link-space" id="url-input" type="url" name="link"
-              placeholder="Ссылка на картинку" required />
-            <span className="popup__input-error url-input-error"></span>
-          </>
-        } />
+        <AddPlacePopup buttonText={buttonText} onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} />
 
         <PopupWithiForm name="delete-card" title="Вы уверены?" buttonText="Да" onClose={handleCloseAllPopups} />
         <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
