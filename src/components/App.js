@@ -19,11 +19,15 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setUserInfo] = React.useState({ name: '', about: '', avatar: '' });
   const [buttonText, setButtonText] = React.useState('Сохранить');
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api.getUserInfo()
-      .then((info) => {
+    Promise.all([
+      api.getUserInfo(),
+      api.getInitialCards()])
+      .then(([info, cards]) => {
         setUserInfo(info);
+        setCards(cards);
       })
       .catch((err) => {
         console.log(err);
@@ -78,6 +82,38 @@ function App() {
       })
   }
 
+  function handleCardLike(cardInfo) {
+    const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
+    if (!isLiked) {
+      api.changeLikeCardStatus(cardInfo._id, 'PUT')
+        .then((newCard) => {
+          setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      api.changeLikeCardStatus(cardInfo._id, 'DELETE')
+        .then((newCard) => {
+          setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  function handleCardDelete(cardInfo) {
+    api.deleteCard(cardInfo._id)
+      .then(() => {
+        setCards(cards.filter(card => card._id !== cardInfo._id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onKeyDown={(e) => {
@@ -86,7 +122,7 @@ function App() {
         }
       }}>
         <Header />
-        <Main onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
+        <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
         <Footer />
         <EditProfilePopup buttonText={buttonText} onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} />
         <EditAvatarPopup buttonText={buttonText} onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} />

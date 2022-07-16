@@ -1,51 +1,15 @@
 import React from 'react';
-import api from '../utils/api';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCardClick }) {
+function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCardClick, cards, onCardLike, onCardDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [cards, setCards] = React.useState([]);
 
-  React.useEffect(() => {
-    api.getInitialCards()
-      .then((initialCards) => {
-        setCards(initialCards);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, []);
-
-  function handleCardLike(cardInfo) {
-    const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
-    if (!isLiked) {
-      api.changeLikeCardStatus(cardInfo._id, 'PUT')
-        .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      api.changeLikeCardStatus(cardInfo._id, 'DELETE')
-        .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+  function cardLikeClick(cardInfo) {
+    onCardLike(cardInfo);
   }
-
-  function handleCardDelete(cardInfo) {
-    api.deleteCard(cardInfo._id)
-      .then(() => {
-        setCards(cards.filter(card => card._id !== cardInfo._id));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  function cardDelete(cardInfo) {
+    onCardDelete(cardInfo);
   }
 
   return (
@@ -68,8 +32,7 @@ function Main({ isEditAvatarPopupOpen, onEditProfile, isAddPlacePopupOpen, onCar
       <section>
         <ul className="elements">
           {cards.map((card) => (
-
-            <Card cardInfo={card} onCardDelete={handleCardDelete} onCardLikeClick={handleCardLike} onCardClick={onCardClick} key={card._id} />
+            <Card cardInfo={card} onCardDelete={cardDelete} onCardLikeClick={cardLikeClick} onCardClick={onCardClick} key={card._id} />
           ))}
         </ul>
       </section>
