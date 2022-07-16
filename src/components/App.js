@@ -3,7 +3,7 @@ import '../index.css';
 import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
-import PopupWithiForm from './PopupWithForm';
+import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -16,12 +16,13 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  const [isConfirmationPopupOpen, setConfirmationPopupOpen] = React.useState(false);
   const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setUserInfo] = React.useState({ name: '', about: '', avatar: '' });
   const [buttonText, setButtonText] = React.useState('Сохранить');
   const [cards, setCards] = React.useState([]);
-
+  const [cardForDelete, setCardForDelete] = React.useState('');
   React.useEffect(() => {
     Promise.all([
       api.getUserInfo(),
@@ -49,6 +50,7 @@ function App() {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setCardPopupOpen(false);
+    setConfirmationPopupOpen(false);
   }
   function handleCardClick(card) {
     setSelectedCard({ name: card.name, link: card.link });
@@ -103,20 +105,26 @@ function App() {
     }
   }
   function handleCardDelete(cardInfo) {
-    api.deleteCard(cardInfo._id)
+    setConfirmationPopupOpen(true);
+    setCardForDelete(cardInfo);
+  }
+  function handleDeleteCard() {
+    api.deleteCard(cardForDelete._id)
       .then(() => {
-        setCards(cards.filter(card => card._id !== cardInfo._id));
+        setCards(cards.filter(card => card._id !== cardForDelete._id));
+
       })
       .catch((err) => {
         console.log(err);
       });
+    handleCloseAllPopups();
   }
+
   function handleAddPlaceSubmit(cardInfo) {
-    console.log(cardInfo);
     setButtonText('Сохранение...');
     api.setInitialCards(cardInfo)
-      .then((res) => {
-        // setUserInfo(res);
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
         handleCloseAllPopups();
       })
       .catch((err) => {
@@ -126,7 +134,6 @@ function App() {
         setTimeout(setButtonText('Сохранить'), 2000);
       })
   }
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -141,8 +148,7 @@ function App() {
         <EditProfilePopup buttonText={buttonText} onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} />
         <EditAvatarPopup buttonText={buttonText} onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} />
         <AddPlacePopup buttonText={buttonText} onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} />
-
-        <PopupWithiForm name="delete-card" title="Вы уверены?" buttonText="Да" onClose={handleCloseAllPopups} />
+        <PopupWithForm onDeleteCard={handleDeleteCard} onClose={handleCloseAllPopups} isOpen={isConfirmationPopupOpen} name="delete-card" title="Вы уверены?" buttonText="Да" />
         <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
       </div>
     </CurrentUserContext.Provider>
