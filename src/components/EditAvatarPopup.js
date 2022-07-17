@@ -26,7 +26,7 @@ function EditAvatarPopup({ isLoading, isOpen, onClose, onUpdateAvatar }) {
           <input ref={avatarRef} onChange={handleChangeLink} className="popup__input popup__input_type_link-avatar" id="avatar-input" type="url" name="link"
             placeholder="Ссылка на аватар" required />
           <span className="popup__input-error avatar-input-error"></span>
-          <button onClick={onClose} className="popup__save-btn" type="submit">{isLoading ? "Сохранение..." : "Сохранить"}</button>
+          <button className="popup__save-btn" type="submit">{isLoading ? "Сохранение..." : "Сохранить"}</button>
         </form>
         <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
       </div>

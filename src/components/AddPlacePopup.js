@@ -19,6 +19,7 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   }
 
   React.useEffect(() => {
+    console.log('AddPlacePopup');
     setNameCard('');
     setLinkCard('');
   }, [isOpen]);
