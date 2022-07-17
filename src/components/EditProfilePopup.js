@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ buttonText, isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ isLoading, isOpen, onClose, onUpdateUser }) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
   const currentUser = React.useContext(CurrentUserContext);
@@ -37,11 +37,11 @@ function EditProfilePopup({ buttonText, isOpen, onClose, onUpdateUser }) {
           <input value={description} onChange={handleChangeDescription} className="popup__input popup__input_type_job" id="about-input" type="text" name="about"
             placeholder="О себе" minLength="2" maxLength="200" required />
           <span className="popup__input-error about-input-error"></span>
-          <button className="popup__save-btn" type="submit">{buttonText}</button>
+          <button className="popup__save-btn" type="submit">{isLoading ? "Сохранение..." : "Сохранить"}</button>
         </form>
-        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть"></button>
+        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
       </div>
-    </ div >
+    </ div>
   )
 }
 

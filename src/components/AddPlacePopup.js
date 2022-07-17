@@ -1,6 +1,6 @@
 import React from "react";
 
-function AddPlacePopup({ buttonText, isOpen, onClose, onAddCard }) {
+function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   const [nameCard, setNameCard] = React.useState('');
   const [linkCard, setLinkCard] = React.useState('');
 
@@ -16,9 +16,12 @@ function AddPlacePopup({ buttonText, isOpen, onClose, onAddCard }) {
       name: nameCard,
       link: linkCard,
     });
+  }
+
+  React.useEffect(() => {
     setNameCard('');
     setLinkCard('');
-  }
+  }, [isOpen]);
 
   return (
     <div className={`popup popup_new-space ${isOpen ? 'popup_opened' : ''}`} >
@@ -31,11 +34,11 @@ function AddPlacePopup({ buttonText, isOpen, onClose, onAddCard }) {
           <input value={linkCard} onChange={handleChangeLinkCard} className="popup__input popup__input_type_job" id="about-input" type="text" name="about"
             placeholder="Ссылка на картинку" minLength="2" maxLength="200" required />
           <span className="popup__input-error about-input-error"></span>
-          <button className="popup__save-btn" type="submit">{buttonText}</button>
+          <button className="popup__save-btn" type="submit">{isLoading ? "Сохранение..." : "Сохранить"}</button>
         </form>
-        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть"></button>
+        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
       </div>
-    </ div >
+    </ div>
   )
 }
 

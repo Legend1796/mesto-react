@@ -20,7 +20,7 @@ function App() {
   const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setUserInfo] = React.useState({ name: '', about: '', avatar: '' });
-  const [buttonText, setButtonText] = React.useState('Сохранить');
+  const [isLoading, setIsLoading] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const [cardForDelete, setCardForDelete] = React.useState('');
   React.useEffect(() => {
@@ -57,7 +57,7 @@ function App() {
     setCardPopupOpen(true);
   }
   function handleUpdateUser(userData) {
-    setButtonText('Сохранение...');
+    setIsLoading(true);
     api.setUserInfo(userData)
       .then((res) => {
         setUserInfo(res);
@@ -67,11 +67,11 @@ function App() {
         console.log('EditProfilePopup:', err);
       })
       .finally(() => {
-        setTimeout(setButtonText('Сохранить'), 2000);
+        setTimeout(setIsLoading(false), 2000);
       })
   }
   function handleUpdateAvatar(newAvatar) {
-    setButtonText('Сохранение...');
+    setIsLoading(true);
     api.setAvatar(newAvatar.avatar)
       .then((res) => {
         setUserInfo(res);
@@ -81,7 +81,7 @@ function App() {
         console.log('EditProfilePopup:', err);
       })
       .finally(() => {
-        setTimeout(setButtonText('Сохранить'), 2000);
+        setTimeout(setIsLoading(false), 2000);
       })
   }
   function handleCardLike(cardInfo) {
@@ -111,17 +111,15 @@ function App() {
   function handleDeleteCard() {
     api.deleteCard(cardForDelete._id)
       .then(() => {
-        setCards(cards.filter(card => card._id !== cardForDelete._id));
-
+        setCards((state) => state.filter(c => c._id !== cardForDelete._id));
       })
       .catch((err) => {
         console.log(err);
       });
     handleCloseAllPopups();
   }
-
   function handleAddPlaceSubmit(cardInfo) {
-    setButtonText('Сохранение...');
+    setIsLoading(true);
     api.setInitialCards(cardInfo)
       .then((newCard) => {
         setCards([newCard, ...cards]);
@@ -131,23 +129,24 @@ function App() {
         console.log('EditProfilePopup:', err);
       })
       .finally(() => {
-        setTimeout(setButtonText('Сохранить'), 2000);
+        setTimeout(setIsLoading(false), 2000);
       })
+  }
+  function closePopupsOnEsc(e) {
+    if (e.key === 'Escape') {
+      handleCloseAllPopups();
+    }
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page" onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          handleCloseAllPopups();
-        }
-      }}>
+      <div className="page" onKeyDown={closePopupsOnEsc}>
         <Header />
         <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
         <Footer />
-        <EditProfilePopup buttonText={buttonText} onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} />
-        <EditAvatarPopup buttonText={buttonText} onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} />
-        <AddPlacePopup buttonText={buttonText} onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} />
+        <EditProfilePopup onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} isLoading={isLoading} />
+        <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} isLoading={isLoading} />
+        <AddPlacePopup onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} isLoading={isLoading} />
         <PopupWithForm onDeleteCard={handleDeleteCard} onClose={handleCloseAllPopups} isOpen={isConfirmationPopupOpen} name="delete-card" title="Вы уверены?" buttonText="Да" />
         <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
       </div>

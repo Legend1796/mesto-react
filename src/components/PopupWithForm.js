@@ -12,9 +12,9 @@ function PopupWithForm({ name, isOpen, onClose, buttonText, title, onDeleteCard 
         <form onSubmit={handleSubmit} name={name} className={`popup__form popup__form_${name}`} noValidate>
           <button className="popup__save-btn" type="submit">{buttonText}</button>
         </form>
-        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть"></button>
+        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
       </div>
-    </ div >
+    </ div>
   )
 }
 
