@@ -1,4 +1,5 @@
 import React from "react";
+import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   const [nameCard, setNameCard] = React.useState('');
@@ -10,8 +11,7 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   function handleChangeLinkCard(e) {
     setLinkCard(e.target.value);
   }
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit() {
     onAddCard({
       name: nameCard,
       link: linkCard,
@@ -24,24 +24,16 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   }, [isOpen]);
 
   return (
-
-
-
-    <div className={`popup popup_new-space ${isOpen ? 'popup_opened' : ''}`} >
-      <div className="popup__container">
-        <h2 className="popup__text">Новое место</h2>
-        <form onSubmit={handleSubmit} name="new-space" className="popup__form popup__form_new-space" noValidate>
-          <input value={nameCard} onChange={handleChangeNameCard} className=" popup__input popup__input_type_name" id="name-input" type="text" name="name" placeholder="Название места"
-            minLength="2" maxLength="40" required />
-          <span className="popup__input-error name-input-error"></span>
-          <input value={linkCard} onChange={handleChangeLinkCard} className="popup__input popup__input_type_job" id="about-input" type="text" name="about"
-            placeholder="Ссылка на картинку" minLength="2" maxLength="200" required />
-          <span className="popup__input-error about-input-error"></span>
-          <button className="popup__save-btn" type="submit">{isLoading ? "Сохранение..." : "Сохранить"}</button>
-        </form>
-        <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
-      </div>
-    </ div>
+    <PopupWithForm eventSubmit={handleSubmit} name="new-space" title="Новое место" buttonText={isLoading ? "Сохранение..." : "Сохранить"} onClose={onClose} isOpen={isOpen} children={
+      <>
+        <input value={nameCard} onChange={handleChangeNameCard} className="popup__input popup__input_type_name-space" id="cardName-input" type="text" name="name"
+          placeholder="Название места" minLength="2" maxLength="30" required />
+        <span className="popup__input-error cardName-input-error"></span>
+        <input value={linkCard} onChange={handleChangeLinkCard} className="popup__input popup__input_type_link-space" id="url-input" type="url" name="link"
+          placeholder="Ссылка на картинку" required />
+        <span className="popup__input-error url-input-error"></span>
+      </>
+    } />
   )
 }
 

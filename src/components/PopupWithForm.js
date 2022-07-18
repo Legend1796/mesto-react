@@ -1,5 +1,4 @@
 function PopupWithForm({ name, isOpen, onClose, buttonText, children, title, eventSubmit }) {
-
   function handleSubmit(e) {
     e.preventDefault();
     eventSubmit();
@@ -18,4 +17,5 @@ function PopupWithForm({ name, isOpen, onClose, buttonText, children, title, eve
     </ div>
   )
 }
+
 export default PopupWithForm;
