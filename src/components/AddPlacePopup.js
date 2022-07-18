@@ -19,12 +19,14 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   }
 
   React.useEffect(() => {
-    console.log('AddPlacePopup');
     setNameCard('');
     setLinkCard('');
   }, [isOpen]);
 
   return (
+
+
+
     <div className={`popup popup_new-space ${isOpen ? 'popup_opened' : ''}`} >
       <div className="popup__container">
         <h2 className="popup__text">Новое место</h2>

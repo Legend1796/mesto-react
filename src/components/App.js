@@ -3,7 +3,7 @@ import '../index.css';
 import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
-import PopupWithForm from './PopupWithForm';
+import ConfirmationPopup from './ConfirmationPopup';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -147,7 +147,7 @@ function App() {
         <EditProfilePopup onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} isLoading={isLoading} />
         <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} isLoading={isLoading} />
         <AddPlacePopup onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} isLoading={isLoading} />
-        <PopupWithForm onDeleteCard={handleDeleteCard} onClose={handleCloseAllPopups} isOpen={isConfirmationPopupOpen} name="delete-card" title="Вы уверены?" buttonText="Да" />
+        <ConfirmationPopup onDeleteCard={handleDeleteCard} onClose={handleCloseAllPopups} isOpen={isConfirmationPopupOpen} name="delete-card" title="Вы уверены?" buttonText="Да" />
         <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
       </div>
     </CurrentUserContext.Provider>

@@ -1,8 +1,8 @@
-function PopupWithForm({ name, isOpen, onClose, buttonText, title, onDeleteCard }) {
+function PopupWithForm({ name, isOpen, onClose, buttonText, children, title, eventSubmit }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onDeleteCard();
+    eventSubmit();
   }
 
   return (
@@ -10,6 +10,7 @@ function PopupWithForm({ name, isOpen, onClose, buttonText, title, onDeleteCard 
       <div className="popup__container">
         <h2 className="popup__text">{title}</h2>
         <form onSubmit={handleSubmit} name={name} className={`popup__form popup__form_${name}`} noValidate>
+          {children}
           <button className="popup__save-btn" type="submit">{buttonText}</button>
         </form>
         <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
@@ -17,5 +18,4 @@ function PopupWithForm({ name, isOpen, onClose, buttonText, title, onDeleteCard 
     </ div>
   )
 }
-
 export default PopupWithForm;
