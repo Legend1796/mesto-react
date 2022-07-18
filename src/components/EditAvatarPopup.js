@@ -7,7 +7,6 @@ function EditAvatarPopup({ isLoading, isOpen, onClose, onUpdateAvatar }) {
     avatarRef.current.value = e.target.value;
   }
   function handleSubmit() {
-    console.log('test');
     onUpdateAvatar({
       avatar: avatarRef.current.value,
     });
