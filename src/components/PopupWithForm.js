@@ -10,7 +10,7 @@ function PopupWithForm({ name, isOpen, onClose, buttonText, children, title, eve
         <h2 className="popup__text">{title}</h2>
         <form onSubmit={handleSubmit} name={name} className={`popup__form popup__form_${name}`} noValidate>
           {children}
-          <button className={`popup__save-btn ${!activeSubmitButton ? 'popup__save-btn_disabled' : ''}`} type="submit" >{buttonText}</button>
+          <button className={`popup__save-btn ${!activeSubmitButton ? 'popup__save-btn_disabled' : ''}`} type="submit" disabled={!activeSubmitButton}>{buttonText}</button>
         </form>
         <button onClick={onClose} className="popup__close" type="button" aria-label="Закрыть" />
       </div>

@@ -9,7 +9,7 @@ function EditProfilePopup({ isLoading, isOpen, onClose, onUpdateUser }) {
   const [isValidDescription, setValidDescription] = React.useState(true);
   const [validationMessageName, setValidationMessageName] = React.useState('');
   const [validationMessageDescription, setValidationMessageDescription] = React.useState('');
-
+  const [isActiveSubmitButton, setActiveSubmitButton] = React.useState(true);
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
@@ -39,8 +39,14 @@ function EditProfilePopup({ isLoading, isOpen, onClose, onUpdateUser }) {
     });
   }
 
+  React.useEffect(() => {
+    if (validationMessageName || validationMessageDescription) {
+      setActiveSubmitButton(false);
+    } else { setActiveSubmitButton(true) }
+  }, [validationMessageName, validationMessageDescription]);
+
   return (
-    <PopupWithForm eventSubmit={handleSubmit} name="profile" title="Редактировать профиль" buttonText={isLoading ? "Сохранение..." : "Сохранить"} onClose={onClose} isOpen={isOpen} children={
+    <PopupWithForm activeSubmitButton={isActiveSubmitButton} eventSubmit={handleSubmit} name="profile" title="Редактировать профиль" buttonText={isLoading ? "Сохранение..." : "Сохранить"} onClose={onClose} isOpen={isOpen} children={
       <>
         <input value={name} onChange={handleChangeName} className=" popup__input popup__input_type_name" id="name-input" type="text" name="name" placeholder="Имя"
           minLength="2" maxLength="40" required />

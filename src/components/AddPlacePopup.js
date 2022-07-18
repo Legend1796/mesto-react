@@ -4,11 +4,11 @@ import PopupWithForm from "./PopupWithForm";
 function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   const [nameCard, setNameCard] = React.useState('');
   const [linkCard, setLinkCard] = React.useState('');
-  const [isValidName, setValidName] = React.useState(true);
-  const [isValidLink, setisValidLink] = React.useState(true);
+  const [isValidName, setValidName] = React.useState(false);
+  const [isValidLink, setValidLink] = React.useState(false);
   const [validationMessageName, setValidationMessageName] = React.useState('');
   const [validationMessageLink, setValidationMessageLink] = React.useState('');
-  // const [isActiveSubmitButton, setActiveSubmitButton] = React.useState(false);
+  const [isActiveSubmitButton, setActiveSubmitButton] = React.useState(false);
 
   function handleChangeNameCard(e) {
     setNameCard(e.target.value);
@@ -19,7 +19,7 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   }
   function handleChangeLinkCard(e) {
     setLinkCard(e.target.value);
-    setisValidLink(e.target.validity.valid);
+    setValidLink(e.target.validity.valid);
     if (e.target.validity.valid) {
       setValidationMessageLink('');
     } else {
@@ -34,17 +34,23 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
   }
 
   React.useEffect(() => {
+    if (validationMessageName || validationMessageLink) {
+      setActiveSubmitButton(false);
+    } else { setActiveSubmitButton(true) }
+  }, [validationMessageName, validationMessageLink]);
+
+  React.useEffect(() => {
     setNameCard('');
     setLinkCard('');
     setValidName(true);
-    setisValidLink(true);
+    setValidLink(true);
     setValidationMessageName('');
     setValidationMessageLink('');
-    // setActiveSubmitButton(false);
+    setActiveSubmitButton(false);
   }, [isOpen]);
 
   return (
-    <PopupWithForm activeSubmitButton={isValidName && isValidLink} eventSubmit={handleSubmit} name="new-space" title="Новое место" buttonText={isLoading ? "Сохранение..." : "Сохранить"} onClose={onClose} isOpen={isOpen} children={
+    <PopupWithForm activeSubmitButton={isActiveSubmitButton} eventSubmit={handleSubmit} name="new-space" title="Новое место" buttonText={isLoading ? "Сохранение..." : "Сохранить"} onClose={onClose} isOpen={isOpen} children={
       <>
         <input value={nameCard} onChange={handleChangeNameCard} className="popup__input popup__input_type_name-space" id="cardName-input" type="text" name="name"
           placeholder="Название места" minLength="2" maxLength="30" required />
