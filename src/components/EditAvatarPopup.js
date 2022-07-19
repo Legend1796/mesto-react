@@ -8,12 +8,13 @@ function EditAvatarPopup({ isLoading, isOpen, onClose, onUpdateAvatar }) {
   const [validationMessageLink, setValidationMessageLink] = React.useState('');
 
   function handleChangeLink(e) {
-    avatarRef.current.value = e.target.value;
     setValid(avatarRef.current.validity.valid);
     if (e.target.validity.valid) {
       setValidationMessageLink('');
+      setActiveSubmitButton(true)
     } else {
       setValidationMessageLink(e.target.validationMessage);
+      setActiveSubmitButton(false)
     }
   }
   function handleSubmit() {
@@ -28,12 +29,6 @@ function EditAvatarPopup({ isLoading, isOpen, onClose, onUpdateAvatar }) {
     setValidationMessageLink('');
     setActiveSubmitButton(false);
   }, [isOpen]);
-
-  React.useEffect(() => {
-    if (validationMessageLink) {
-      setActiveSubmitButton(false);
-    } else { setActiveSubmitButton(true) }
-  }, [validationMessageLink]);
 
   return (
     <PopupWithForm activeSubmitButton={isActiveSubmitButton} eventSubmit={handleSubmit} name="edit-avatar" title="Обновить аватар" buttonText={isLoading ? "Сохранение..." : "Сохранить"} onClose={onClose} isOpen={isOpen} children={
